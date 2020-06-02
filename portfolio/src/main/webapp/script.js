@@ -17,7 +17,7 @@
  */
 function addRandomGreeting() {
   const greetings =
-      ['Good Grief', 'I am Batman', 'Oh Jeez Rick', 'Teen Titans!'];
+      ['Good Grief - Jotaro Kujo', 'I am Batman - Batman (Obviously)', 'Oh Jeez Rick - Morty', 'Like Zoinks Man - Shaggy'];
 
   // Pick a random greeting.
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
@@ -25,4 +25,11 @@ function addRandomGreeting() {
   // Add it to the page.
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
+}
+
+
+function getRandomQuoteUsingArrowFunctions() {
+  fetch('/data').then(response => response.text()).then((quote) => {
+    document.getElementById('quote-container').innerText = quote;
+  });
 }
