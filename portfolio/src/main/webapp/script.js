@@ -29,7 +29,22 @@ function addRandomQuote() {
 
 
 function getFromDataUsingArrow() {
-  fetch('/data').then(response => response.text()).then((quote) => {
-    document.getElementById('data-container').innerText = quote;
+  fetch('/data').then(response => response.json()).then((data) => {
+
+    const dataListElement = document.getElementById('data-container');
+    dataListElement.innerHTML = '';
+    dataListElement.appendChild(
+        createListElement('Message 1: ' + data.Message1));
+    dataListElement.appendChild(
+        createListElement('Message 2: ' + data.Message2));
+    dataListElement.appendChild(
+        createListElement('Message 3: ' + data.Message3));
   });
+}
+
+/** Creates an <li> element containing text. */
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
 }
