@@ -10,7 +10,9 @@
     <div id="content">
       <h1>CJ's Portfolio</h1>
       <a href="https://github.com/cjhbh3" target="_blank">Github</a>
-      <h2>About Me</h2>
+    </div>
+    <div id="subcontent">
+      <h3>About Me</h3>
       <p>
         Hi, my name is CJ.</br>
         I just finished my freshmen year at Missour S&T.</br>
@@ -18,16 +20,41 @@
         I have worked in many IT jobs.</br>
         Why did I start CS? My experience as a lead programmer in FTC Robotics during High School.</br>
       </p>
-      <p>This is my dog, Juliette.</p>
-      <img src="/images/Juliette.jpg" width="500" height="500">
-      <p>Here is what I look like!</p>
-      <img src="/images/SelfPic.JPG" with="500" height = "500">
-      <p>Fetching Text</p>
-      <button onclick="getFromDataUsingArrow()">Fetch Me that Text</button>
-      <div id="data-container"></div>
+    </div>
+    <div id="picture">
+      <img src="/images/SelfPic.JPG" alt="Here is what I look like!" height="500" width="500">
+    </div>
+    <div id="servlets">
+      <p><strong>Servlet 1:</strong></p>
       <p>Click here for one of my favorite tv show quotes:</p>
       <button onclick="addRandomQuote()">Give me a Quote</button>
+      </br>
       <div id="quote-container"></div>
     </div>
+    </br>
+    <div id="servlets">
+      <p><strong>Servlet 2:</strong></p>
+      <p>Fetching Text</p>
+      <button onclick="getFromDataUsingArrow()">Fetch Me that Text</button>
+      </br>
+      <div id="data-container"></div>
+    </div>
+    </br>
+    <div id="servlets">
+      <p><strong>Servlet 3:</strong></p>
+      <form action="/data" method="POST">
+        <!--
+        <label for="fname">First Name:</label></br>
+        <input type="text" id="fname" name="fname"></br>
+        <label for="lname">Last Name:</label></br>
+        <input type="text" id="lname" name="lname"></br> -->
+        <label for="info">Please Enter a comma seperated list</label></br>
+        <input type="text" id="info" name="info"></br>
+        <input type="checkbox" name="upper-case" value="true">Upper-Case</br>
+        <input type="checkbox" name="sort" value="true">Sorted</br>
+        </br>
+        <input type="submit" />
+      </form>
+      <p>Once you have submit, use Servlet 2 to see the results!</p>
   </body>
 </html>
