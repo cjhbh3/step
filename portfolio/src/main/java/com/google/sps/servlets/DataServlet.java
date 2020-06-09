@@ -15,6 +15,12 @@
 package com.google.sps.servlets;
 
 import java.io.IOException;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -41,8 +47,6 @@ public class DataServlet extends HttpServlet {
   @Override 
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Receive info from form
-    // String firstName = getParameter(request,"fname","");
-    // String lastName = getParameter(request,"lname","");
     String information = getParameter(request,"info","");
     boolean upperCase = Boolean.parseBoolean(getParameter(request,"upper-case","false"));
     boolean sort = Boolean.parseBoolean(getParameter(request,"sort","false"));
@@ -58,10 +62,32 @@ public class DataServlet extends HttpServlet {
     if (sort) {
       Arrays.sort(words);
     }
+    
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
+    /* At this point: messages is empty. 
+    Therefore, we grab the comments from datastore*/
+
+    // Make a query
+    Query query = new Query("Comment");
+    PreparedQuery results = datastore.prepare(query);
+    for (Entity entity : results.asIterable()) {
+      String message = (String) entity.getProperty("comment");
+      // Gets rid of redundancy
+      if (messages.indexOf(message) == -1) {
+        messages.add(message);
+      }
+    }
+    
     // Add words to our message ArrayList
     for (String word : words) {
+      // Add to ArrayList
       messages.add(word);
+
+      // Add to Datastore
+      Entity commentEntity = new Entity("Comment");
+      commentEntity.setProperty("comment", word);
+      datastore.put(commentEntity);
     }
 
     // Send words to /data and redirect user back to index.html
