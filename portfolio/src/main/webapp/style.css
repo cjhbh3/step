@@ -1,9 +1,35 @@
+body {
+  background-color: #deba85
+}
+
 #content {
   margin-left: auto;
   margin-right: auto;
   width: 650px;
 }
 
+#subcontent {
+  margin-left: auto;
+  margin-right: auto;
+  width: 650px;
+  border-style: dashed;
+  font: "Times New Roman";
+  text-align: center;
+}
+
+#servlets {
+  margin-left: auto;
+  margin-right: auto;
+  width: 650px;
+  border-style: dotted;
+  font: "Times New Roman";
+  font-weight: bold;
+  text-align: center;
+}
+
+#picture {
+  text-align: center;
+}
 
 #greeting-container {
   margin-top: 20px;

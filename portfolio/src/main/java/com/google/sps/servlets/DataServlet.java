@@ -20,19 +20,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Arrays;
+import com.google.gson.Gson;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+  ArrayList<String> messages = new ArrayList<String>();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    //Create an ArrayList of strings and add three messages
-    ArrayList<String> messages = new ArrayList<String>();
-    messages.add("Hello Friends");
-    messages.add("Howdy Partner");
-    messages.add("Heyo Bucko");
-
     // Convert messages to JSON
     String json = convertToJson(messages);
 
@@ -41,17 +38,50 @@ public class DataServlet extends HttpServlet {
     response.getWriter().println(json);
   }
 
+  @Override 
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Receive info from form
+    // String firstName = getParameter(request,"fname","");
+    // String lastName = getParameter(request,"lname","");
+    String information = getParameter(request,"info","");
+    boolean upperCase = Boolean.parseBoolean(getParameter(request,"upper-case","false"));
+    boolean sort = Boolean.parseBoolean(getParameter(request,"sort","false"));
+
+    // Apply Settings
+    if (upperCase) {
+      information = information.toUpperCase();
+    }
+
+    // Break up comma split list into words
+    String[] words = information.split("\\s*, \\s*");
+
+    if (sort) {
+      Arrays.sort(words);
+    }
+
+    // Add words to our message ArrayList
+    for (String word : words) {
+      messages.add(word);
+    }
+
+    // Send words to /data and redirect user back to index.html
+    response.setContentType("text/html;");
+    response.getWriter().println(Arrays.toString(words));
+    response.sendRedirect("/index.html");
+  }
+
   private String convertToJson(ArrayList<String> array) {
-    String json = "{";
-    json += "\"Message1\": ";
-    json += "\"" + array.get(0) + "\"";
-    json += ", ";
-    json += "\"Message2\": ";
-    json += "\"" + array.get(1) + "\"";
-    json += ", ";
-    json += "\"Message3\": ";
-    json += "\"" + array.get(2) + "\"";
-    json += "}";
+    // Changed to utilizing Gson to make taking user input easier
+    Gson gson = new Gson();
+    String json = gson.toJson(array);
     return json;
+  }
+
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
   }
 }

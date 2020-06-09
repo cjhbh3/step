@@ -29,16 +29,14 @@ function addRandomQuote() {
 
 
 function getFromDataUsingArrow() {
+  var i;
   fetch('/data').then(response => response.json()).then((data) => {
-
     const dataListElement = document.getElementById('data-container');
     dataListElement.innerHTML = '';
-    dataListElement.appendChild(
-        createListElement('Message 1: ' + data.Message1));
-    dataListElement.appendChild(
-        createListElement('Message 2: ' + data.Message2));
-    dataListElement.appendChild(
-        createListElement('Message 3: ' + data.Message3));
+    for (i=0; i<data.length; i++) {
+      dataListElement.appendChild(
+        createListElement('Message ' + (i+1) + ': ' + data[i]));
+    }
   });
 }
 
