@@ -64,7 +64,7 @@ public class DataServlet extends HttpServlet {
     }
     
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
+    messages.clear();
     /* At this point: messages is empty. 
     Therefore, we grab the comments from datastore*/
 
@@ -90,9 +90,12 @@ public class DataServlet extends HttpServlet {
       datastore.put(commentEntity);
     }
 
+    Object[] holder = messages.toArray();
+
+
     // Send words to /data and redirect user back to index.html
     response.setContentType("text/html;");
-    response.getWriter().println(Arrays.toString(words));
+    response.getWriter().println(Arrays.toString(holder));
     response.sendRedirect("/index.html");
   }
 
@@ -109,5 +112,27 @@ public class DataServlet extends HttpServlet {
       return defaultValue;
     }
     return value;
+  }
+
+  private int getUserChoice(HttpServletRequest request)
+  {
+    // Grab user choice
+    String userInput = request.getParameter("user-choice");     
+    
+    int userChoice = 0;
+    try {
+      userChoice = Integer.parseInt(userInput);
+    } catch (NumberFormatException e) {
+      System.err.println("Inputted value: " + userChoice);
+      return -1;
+    }
+
+    // Validate Input Range
+    if (userChoice < 1 || userChoice > 10) {
+      System.err.println("Input out of range: " + userChoice);
+      return -1;
+    }
+
+    return userChoice;
   }
 }

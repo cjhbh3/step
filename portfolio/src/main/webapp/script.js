@@ -40,6 +40,60 @@ function getFromDataUsingArrow() {
   });
 }
 
+function getSelectAmountComments() {
+  var i;
+  fetch('/data').then(response => response.json()).then((data) => {
+    do {
+      var commentsShown = prompt("Enter a  number (1-10)");
+      commentsShown = parseInt(commentsShown,10);
+    } while (commentsShown < 1 || commentsShown > 10);
+    console.log("Inputted", commentsShown);
+    const commentElement = document.getElementById('comment-container');
+    commentElement.innerHTML = '';
+    if (data.length < commentsShown) {
+      for (i=0; i<data.length; i++) {
+        commentElement.appendChild(
+        createListElement('Message ' + (i+1) + ': ' + data[i]));
+      }
+    } else {
+      for (i=0; i<commentsShown; i++) {
+        commentElement.appendChild(
+        createListElement('Message ' + (i+1) + ': ' + data[i]));
+      }
+    }
+  });
+}
+
+async function deleteAllComments() {
+  await fetch("/delete-data", {
+    method: "POST", 
+      
+    body: JSON.stringify({ 
+      title: "foo", 
+      body: "bar", 
+      userId: 1 
+    }), 
+        
+    headers: { 
+      "Content-type": "application/json; charset=UTF-8"
+    } 
+  });
+
+  await refreshComments();
+}
+
+function refreshComments() {
+  const commentNode = document.getElementById("comment-container");
+  const dataNode = document.getElementById("data-container");
+  while(commentNode.firstChild) {
+    commentNode.removeChild(commentNode.firstChild);
+  }
+  
+  while (dataNode.firstChild) {
+    dataNode.removeChild(dataNode.firstChild);
+  }
+}
+
 /** Creates an <li> element containing text. */
 function createListElement(text) {
   const liElement = document.createElement('li');
